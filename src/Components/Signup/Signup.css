@@ -1,0 +1,31 @@
+
+.Login {
+  padding: 60px 0;
+}
+.Login form {
+  margin: 0 auto;
+  max-width: 600px;
+  background-color: aliceblue;
+  height: auto;
+  border-radius: 10px;
+  padding: 10px;
+}
+.content_style {
+  height: 90vh;
+  background-color: white;
+  border-radius: 10px;
+}
+.navbar-brand{
+  font-size: 50px;
+}
+.navbar{
+  border-radius: 10px;
+}
+.button-style{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.back-btn {
+  margin-left: 10px;
+}

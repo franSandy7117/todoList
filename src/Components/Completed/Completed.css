@@ -1,0 +1,13 @@
+.navbar-collapse {
+  justify-content: space-between !important;
+}
+
+.table {
+  background-color: white !important;
+}
+
+.table-width {
+  width: 30%;
+  text-align: center;
+}
+

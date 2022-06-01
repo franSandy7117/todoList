@@ -1,0 +1,7 @@
+.App {
+  background-image: url('https://images.pexels.com/photos/669996/pexels-photo-669996.jpeg?cs=srgb&dl=pexels-bich-tran-669996.jpg&fm=jpg');
+  height: fit-content;
+  background-size: cover;
+  padding: 50px;
+}
+
