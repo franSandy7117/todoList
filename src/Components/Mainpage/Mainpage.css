@@ -1,96 +1,19 @@
 .mainpage_style {
   height: 100vh;
   background-color: white;
-  background-size: cover;
   border-radius: 10px;
 }
-.dropdown {
-  position: relative;
-  display: inline-block;
-  margin-right: 10px;
-  margin-left: 10px;
-}
 
-.dropdown-content {
-  text-align: center;
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-.dropdown-content > div {
-  padding: 10px;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 .app {
   padding: 30px;
   background-color: floralwhite;
 }
 
-.todo {
-  align-items: center;
-  display: flex;
-  font-size: 18px;
-  justify-content: space-between;
-}
-
-table {
-  border: 1px solid;
-}
-table thead {
-  font-weight: bold;
-}
-table tbody {
-  display: block;
-  height: 72vh;
-  overflow-y: auto;
-}
-table tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-table td {
-  vertical-align: top;
-}
-table td .actions {
-  float: right;
-}
-table td .actions svg {
-  cursor: pointer;
-  margin: 5px;
-}
-table .loading-row {
-  text-align: center;
-  font-size: 1em;
-  padding-top: 3em;
-}
-.card-body {
-  padding: 0px !important;
-}
-.nav-link {
-  color: black !important;
-}
-.nav-link:hover {
-  background-color: #beb7b7 !important;
-  border-radius: 5px;
-}
-.nav {
-  display: block;
-  padding: 0.5rem 0.5rem !important;
-  color: black !important;
-  text-decoration: none;
-  transition: color 0.15s ease-in-out;
-  background-color: 0.15s ease-in-out;
-  border-color: 0.15s ease-in-out;
-  background-color: #beb7b7;
-  border-radius: 5px;
-}
 hr {
   margin: 0px !important;
+}
+
+.error-handle {
+  margin-top: 10px;
+  text-align: center;
 }

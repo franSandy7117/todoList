@@ -1,3 +1,12 @@
 .back-button-style {
   margin-left: 10px;
 }
+
+.error-handle {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.update-heading {
+  text-align: center;
+}

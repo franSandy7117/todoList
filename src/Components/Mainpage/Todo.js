@@ -4,6 +4,12 @@ import AuthContext from "../store/authCntext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import "./Todo.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck,
+  faTrash,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Todo = (props) => {
   const todo = props.todo;
@@ -11,12 +17,22 @@ const Todo = (props) => {
   const removeTodo = props.removeTodo;
   const isLoading = props.isLoading;
   const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+  const savedEmail = authCtx.userEmail;
 
-  const presentDate = new Date();
-  const newDate = `${presentDate.getFullYear()}-0${
-    presentDate.getMonth() + 1
-  }-0${presentDate.getDate()}`;
+  const newTodo = todo.filter((todos, key) => todos.email === savedEmail);
+
+  function getPreviousDay(date = new Date()) {
+    const previous = new Date(date.getTime());
+    previous.setDate(date.getDate() - 1);
+
+    return previous;
+  }
+  const previousdate = getPreviousDay();
+  const yesterdayDate = previousdate.toISOString().substring(0, 10);
+
+  let dtToday = new Date();
+  let striTDate = dtToday.toISOString().substring(0, 10);
+
   return (
     <div className="todo">
       <table className="table">
@@ -25,7 +41,7 @@ const Todo = (props) => {
             <th className="title-width">Title</th>
             <th className="description-width">Description</th>
             <th className="before-width">Complete before</th>
-            <th className="delete-width">Status</th>
+            <th className="status-width">Status</th>
             <th className="options-width">Options</th>
           </tr>
         </thead>
@@ -37,54 +53,54 @@ const Todo = (props) => {
               </td>
             </tr>
           )}
-          {!isLoading && !isLoggedIn && (
+          {!isLoading && newTodo.length <= 0 && (
             <tr>
               <td className="loading-row" colSpan="6">
                 No Todo List found
               </td>
             </tr>
           )}
-          {isLoggedIn && todo.length < 1 && (
-            <tr>
-              <td className="loading-row" colSpan="6">
-                Create New Todo
-              </td>
-            </tr>
-          )}
           {!isLoading &&
-            isLoggedIn &&
-            todo.length > 0 &&
-            todo.map((todos, key) => {
+            newTodo.length > 0 &&
+            newTodo.map((todos, key) => {
               return (
                 <tr key={key}>
                   <td className="title-width">{todos.title}</td>
                   <td className="description-width">{todos.description}</td>
                   <td className="before-width">{todos.complitionTime}</td>
-                  <td className="delete-width">
-                    {todos.isDone ? "Completed" : "Incompleted"}
+                  <td className="status-width">
+                    {todos.complitionTime < yesterdayDate && !todos.isDone
+                      ? "Incompleted"
+                      :todos.complitionTime <= yesterdayDate && todos.isDone
+                      ? "Completed"
+                      : todos.complitionTime >= striTDate && todos.isDone
+                      ? "Completed"
+                      : "Yet to Complete"
+                    }
                   </td>
                   <td className="options-width">
-                    {todos.complitionTime >= newDate && (
+                    {todos.complitionTime >= yesterdayDate && !todos.isDone && (
                       <Button
                         type="button"
                         variant="outline-success"
                         onClick={() => markTodo(key, todos.id)}
                       >
-                        ✓
+                        <FontAwesomeIcon icon={faCheck} />
                       </Button>
                     )}
-                    {todos.complitionTime >= newDate && (
+                    {todos.complitionTime >= yesterdayDate && (
                       <Link to={"updatetodo/" + todos.id}>
                         <Button type="button" variant="outline-info">
-                          Edit
+                          <FontAwesomeIcon icon={faPenToSquare} />
                         </Button>
                       </Link>
                     )}
                     <Button
+                      type="button"
                       variant="outline-danger"
                       onClick={() => removeTodo(key, todos.id)}
                     >
-                      ✕
+                      <FontAwesomeIcon icon={faTrash} />
                     </Button>
                   </td>
                 </tr>

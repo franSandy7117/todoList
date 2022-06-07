@@ -14,14 +14,18 @@
   background-color: white;
   border-radius: 10px;
 }
-.navbar{
+.navbar {
   border-radius: 10px;
 }
-.button-style{
+.button-style {
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
 .back-btn {
   margin-left: 10px;
+}
+.error-handle {
+  margin-top: 10px;
+  text-align: center;
 }

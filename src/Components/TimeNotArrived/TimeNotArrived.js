@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../store/authCntext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./TimeNotArrived.css";
 import Navbar from "../store/Navbar";
+import { baseUrl } from "../store/BaseUrl";
 
 const TimeNotArrived = () => {
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
-  const [todo, settodo] = React.useState([{}]);
+  const [todo, settodo] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
-      .get("https://todo-8adda-default-rtdb.firebaseio.com/userdata.json")
+      .get(baseUrl)
       .then(function (response) {
         setLoading(false);
         const loadedData = [];
@@ -27,63 +25,62 @@ const TimeNotArrived = () => {
         settodo(loadedData);
       })
       .catch(function (error) {
-        setError("Something went wrong");
+        setError(error.message);
       });
   }, []);
-  const presentDate = new Date();
-  const newFor = `${presentDate.getFullYear()}-0${
-    presentDate.getMonth() + 1
-  }-0${presentDate.getDate()}`;
+
+  const d = new Date();
+  
+  const todayDate = d.toISOString().substring(0, 10);
+
   const newTodo = todo.filter(
-    (todos, key) => todos.complitionTime > newFor && todos.isDone === false
+    (todos, key) => todos.complitionTime >= todayDate && todos.isDone === false
   );
 
   return (
-    <div>
-      <div className="mainpage_style">
-        <Navbar isLoggedIn={isLoggedIn} isTimeActive={true} />
-        <hr />
-        {error}
-        <div className="app">
-          <div className="container">
-            <h1 className="text-center mb-4">Todo List</h1>
-            <table className="table">
-              <thead>
+    <div className="mainpage_style">
+      <Navbar isTimeActive={true} />
+      <hr />
+      {error}
+      <div className="app">
+        <div className="container">
+          <h1 className="text-center mb-4">Todo List</h1>
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="table-width">Title</th>
+                <th className="table-width">Description</th>
+                <th className="table-width">Complete before</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading && (
                 <tr>
-                  <th className="table-width">Title</th>
-                  <th className="table-width">Description</th>
-                  <th className="table-width">Complete before</th>
+                  <td className="loading-row" colSpan="6">
+                    Loading...
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {isLoading && (
-                  <tr>
-                    <td className="loading-row" colSpan="6">
-                      Loading...
-                    </td>
-                  </tr>
-                )}
-                {!isLoading && newTodo.length < 1 && (
-                  <tr>
-                    <td className="loading-row" colSpan="6">
-                      No Todo List found
-                    </td>
-                  </tr>
-                )}
-                {!isLoading &&
-                  newTodo.length > 0 &&
-                  newTodo.map((todos, key) => {
-                    return (
-                      <tr key={key}>
-                        <td className="table-width">{todos.title}</td>
-                        <td className="table-width">{todos.description}</td>
-                        <td className="table-width">{todos.complitionTime}</td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
+              )}
+              {!isLoading && newTodo.length < 1 && (
+                <tr>
+                  <td className="loading-row" colSpan="6">
+                    No Todo List found
+                  </td>
+                </tr>
+              )}
+              {!isLoading &&
+                newTodo.length > 0 &&
+                newTodo.map((todos, key) => {
+                  return (
+                    <tr key={key}>
+                      <td className="table-width">{todos.title}</td>
+                      <td className="table-width">{todos.description}</td>
+                      <td className="table-width">{todos.complitionTime}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

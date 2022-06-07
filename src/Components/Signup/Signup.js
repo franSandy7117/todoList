@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../store/authCntext";
 import Form from "react-bootstrap/Form";
@@ -8,16 +8,16 @@ import axios from "axios";
 
 const Signup = () => {
   const authCtx = useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const email = useRef();
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateofBirth, setDateofBirth] = useState("");
+  const firstName = useRef();
+  const lastName = useRef();
+  const dateofBirth = useRef();
   const history = useHistory();
   const [error, setError] = useState(null);
 
   function validateForm() {
-    return email.length > 0 && password.length > 5;
+    return password.length > 5;
   }
 
   function handleSubmit(event) {
@@ -26,15 +26,15 @@ const Signup = () => {
 
   const submitHandler = () => {
     const userLoginData = JSON.stringify({
-      email: email,
+      email: email.current.value,
       password: password,
       returnSecureToken: true,
     });
     const userDetails = JSON.stringify({
-      firstName: firstName,
-      lastName: lastName,
-      dateofBirth: dateofBirth,
-      email: email,
+      firstName: firstName.current.value,
+      lastName: lastName.current.value,
+      dateofBirth: dateofBirth.current.value,
+      email: email.current.value,
     });
 
     axios
@@ -53,18 +53,25 @@ const Signup = () => {
         history.push("/mainpage");
       })
       .catch(function (error) {
-        setError("Something went wrong");
+        setError(error.message);
       });
 
-    axios.post(
-      "https://todo-8adda-default-rtdb.firebaseio.com/userDetails.json",
-      userDetails,
-      {
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    axios
+      .post(
+        "https://todo-8adda-default-rtdb.firebaseio.com/userDetails.json",
+        userDetails,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        history.push("/mainpage");
+      })
+      .catch(function (error) {
+        setError(error.message);
+      });
   };
 
   return (
@@ -87,35 +94,19 @@ const Signup = () => {
           </div>
           <Form.Group size="lg" controlId="first">
             <Form.Label>First Name</Form.Label>
-            <Form.Control
-              autoFocus
-              type="text"
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+            <Form.Control autoFocus type="text" ref={firstName} />
           </Form.Group>
           <Form.Group size="lg" controlId="last">
             <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              autoFocus
-              type="text"
-              onChange={(e) => setLastName(e.target.value)}
-            />
+            <Form.Control autoFocus type="text" ref={lastName} />
           </Form.Group>
           <Form.Group size="lg" controlId="email">
             <Form.Label>Email</Form.Label>
-            <Form.Control
-              autoFocus
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Form.Control autoFocus type="email" ref={email} />
           </Form.Group>
           <Form.Group size="lg" controlId="date">
             <Form.Label>Date of Birth</Form.Label>
-            <Form.Control
-              autoFocus
-              type="date"
-              onChange={(e) => setDateofBirth(e.target.value)}
-            />
+            <Form.Control autoFocus type="date" ref={dateofBirth} />
           </Form.Group>
           <Form.Group size="lg" controlId="password">
             <Form.Label>Password</Form.Label>
@@ -136,7 +127,9 @@ const Signup = () => {
               Signup
             </Button>
           </div>
-          <div>{error}</div>
+          <div>
+            <p className="error-handle">{error}</p>
+          </div>
         </Form>
       </div>
     </div>

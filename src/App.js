@@ -14,56 +14,61 @@ import ResetProfile from './Components/ResetProfile/ResetProfile';
 
 function App() {
   const authCtx = useContext(AuthContext);
+  const notLoggedIn = !authCtx.isLoggedIn;
+  const loggedIn = authCtx.isLoggedIn;
+  const goToLoginPage = <Redirect to='/login' />
+  const mainPage = <Redirect to='/mainpage' />
+
   return (
     <div className="App">
       <Switch>
         <Route path="/" exact>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
-            <Redirect to='/mainpage' />
+          {notLoggedIn ? goToLoginPage : (
+            mainPage
           )}
         </Route>
         <Route path='/mainpage'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <Mainpage />
           )}
         </Route>
         <Route path='/login'>
-          {authCtx.isLoggedIn ? (<Redirect to='/mainpage' /> ):(
+          {loggedIn ? mainPage :(
             <Login />
           )}
         </Route>
         <Route path='/signup'>
-          {authCtx.isLoggedIn ? (<Redirect to='/mainpage' /> ):(
+          {loggedIn ? mainPage :(
             <Signup />
           )}
         </Route>
         <Route path='/completed'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <Completed />
           )}
         </Route>
         <Route path='/incompleted'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <Incompleted />
           )}
         </Route>
         <Route path='/createtodo'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <CreateTodo />
           )}
         </Route>
         <Route path='/timenotarrived'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <TimeNotArrived />
           )}
         </Route>
         <Route path='/updatetodo'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <UpdateTodo />
           )}
         </Route>
         <Route path='/resetprofile'>
-          {!authCtx.isLoggedIn ? (<Redirect to='/login' /> ): (
+          {notLoggedIn ? goToLoginPage : (
             <ResetProfile />
           )}
         </Route>
